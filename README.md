@@ -16,7 +16,7 @@ Phase 1: LLMOps & Agent Orchestration (Days 01 - 05)
 
 [x] Day 02: Enforce Structured JSON Outputs for Revit add-in generation.
 
-[ ] Day 03: Local filesystem automation for pyRevit directory structures.
+[x] Day 03: Local filesystem automation for pyRevit directory structures.
 
 [ ] Day 04: Multi-agent chain: Specs Planner -> Code Generator -> Code Reviewer.
 

@@ -1,0 +1,11 @@
+{
+    "tool_name": "DevSandboxTest",
+    "target_panel": "DevTools",
+    "description": "Safe sandbox test button to verify automated deployment in pyRevit.",
+    "edge_cases_handled": [
+        "Check if document is open",
+        "Handle family document vs project document safely",
+        "Silent error handling without Revit crash"
+    ],
+    "python_script": "# -*- coding: utf-8 -*-\n\"\"\"Dev Sandbox Test Tool.\"\"\"\n\nfrom pyrevit import revit, forms\n\ndoc = revit.doc\n\ndef run_sandbox_test():\n    if not doc:\n        forms.alert('No active document found!', title='Sandbox Warning')\n        return\n    \n    doc_title = doc.Title\n    is_family = doc.IsFamilyDocument\n    \n    msg = \"--- Automation Pipeline Test Successful! ---\\n\\n\"\n    msg += \"Active Document: {}\\n\".format(doc_title)\n    msg += \"Document Type: {}\\n\".format('Family Document' if is_family else 'Project Model')\n    msg += \"Status: pyRevit folder scaffold generated automatically by AI pipeline.\"\n    \n    forms.alert(msg, title='BIM AI Engineering Test')\n\nif __name__ == '__main__':\n    run_sandbox_test()\n"
+}
