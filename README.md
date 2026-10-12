@@ -1,4 +1,4 @@
-# 20-Day BIM & AI Engineering Roadmap 🚀
+# 20-Day BIM & AI Engineering Roadmap 
 
 Bridging the gap between Building Information Modeling (BIM/Revit), Multi-Agent AI Orchestration, and Modern Data Engineering.
 
