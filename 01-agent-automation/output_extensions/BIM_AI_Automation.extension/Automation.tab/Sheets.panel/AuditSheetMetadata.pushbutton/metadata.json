@@ -1,0 +1,18 @@
+{
+  "tool_name": "AuditSheetMetadata",
+  "panel_name": "Sheets",
+  "description": "Audits all sheets in the project and alerts the user if any sheet lacks a valid sheet number or sheet name.",
+  "required_classes": [
+    "FilteredElementCollector",
+    "ViewSheet",
+    "BuiltInParameter",
+    "Parameter",
+    "TaskDialog"
+  ],
+  "edge_cases": [
+    "Placeholder sheets (ViewSheet.IsPlaceholder) having empty or partial metadata",
+    "Whitespace-only strings or null values in SHEET_NUMBER or SHEET_NAME parameters",
+    "Handling document without any ViewSheet elements to avoid NullReferenceException",
+    "Excluding sheet view templates or non-standard sheets if present"
+  ]
+}

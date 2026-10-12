@@ -18,9 +18,9 @@ Phase 1: LLMOps & Agent Orchestration (Days 01 - 05)
 
 [x] Day 03: Local filesystem automation for pyRevit directory structures.
 
-[ ] Day 04: Multi-agent chain: Specs Planner -> Code Generator -> Code Reviewer.
+[x] Day 04: Multi-agent chain: Specs Planner -> Code Generator -> Code Reviewer.
 
-[ ] Day 05: End-to-end command-line pyRevit tool generator.
+[x] Day 05: End-to-end command-line pyRevit tool generator.
 
 Phase 2: Local Data Engineering (Days 06 - 10)
 [ ] Day 06: SQLite relational schema design for tool registry & status tracking.
