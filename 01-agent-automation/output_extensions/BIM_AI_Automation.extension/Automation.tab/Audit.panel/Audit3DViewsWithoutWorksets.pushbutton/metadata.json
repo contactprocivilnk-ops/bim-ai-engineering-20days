@@ -1,0 +1,18 @@
+{
+  "tool_name": "Audit3DViewsWithoutWorksets",
+  "panel_name": "Audit",
+  "description": "Identifies and reports all 3D views that do not have a valid or user-defined workset assigned in a workshared project.",
+  "required_classes": [
+    "FilteredElementCollector",
+    "View3D",
+    "BuiltInParameter",
+    "WorksetTable",
+    "WorksetId"
+  ],
+  "edge_cases": [
+    "Document is not workshared (doc.IsWorkshared is False), rendering workset auditing invalid",
+    "View is a view template (view.IsTemplate is True) rather than an actual placed/navigable 3D view",
+    "The ELEM_PARTITION_PARAM parameter is null, read-only, or uninitialized on the view element",
+    "View is a temporary, revision, or internal system view (e.g., default {3D} view in a transient state)"
+  ]
+}
