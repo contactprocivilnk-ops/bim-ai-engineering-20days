@@ -23,7 +23,7 @@ Phase 1: LLMOps & Agent Orchestration (Days 01 - 05)
 [x] Day 05: End-to-end command-line pyRevit tool generator.
 
 Phase 2: Local Data Engineering (Days 06 - 10)
-[ ] Day 06: SQLite relational schema design for tool registry & status tracking.
+[x] Day 06: SQLite relational schema design for tool registry & status tracking.
 
 [ ] Day 07: CRUD operations and querying pending tools via Python.
 
