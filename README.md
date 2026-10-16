@@ -27,7 +27,7 @@ Phase 2: Local Data Engineering (Days 06 - 10)
 
 [x] Day 07: CRUD operations and querying pending tools via Python.
 
-[ ] Day 08: Schema expansion for metadata, YouTube descriptions, and store assets.
+[x] Day 08: Schema expansion for metadata, YouTube descriptions, and store assets.
 
 [ ] Day 09: Automated state persistence (pending -> completed).
 
