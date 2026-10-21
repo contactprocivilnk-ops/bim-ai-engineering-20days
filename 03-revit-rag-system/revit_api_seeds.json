@@ -1,0 +1,47 @@
+[
+  {
+    "topic": "FilteredElementCollector",
+    "namespace": "Autodesk.Revit.DB",
+    "class_name": "FilteredElementCollector",
+    "summary": "Core search engine for querying elements within a Revit document.",
+    "syntax_pattern": "collector = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsNotElementType().ToElements()",
+    "best_practices": "Always chain Quick Filters (OfCategory, OfClass) before Slow Filters. Use WhereElementIsNotElementType() to exclude family symbols. For view-specific queries, pass view.Id: FilteredElementCollector(doc, view.Id).",
+    "common_pitfalls": "Avoid iterating over whole document when a view collector is sufficient. ToElements() instantiates Python lists; for large sets prefer lazy iteration directly over the collector."
+  },
+  {
+    "topic": "Transactions and Document Modification",
+    "namespace": "Autodesk.Revit.DB",
+    "class_name": "Transaction",
+    "summary": "Context for modifying document state. Required for creating, deleting, or altering elements.",
+    "syntax_pattern": "from pyrevit import revit\nwith revit.Transaction('Action Name'):\n    element.LookupParameter('Comments').Set('Updated')",
+    "best_practices": "In pyRevit, wrap operations inside with revit.Transaction('Name'): block. Keep transactions as short and scoped as possible.",
+    "common_pitfalls": "Starting a transaction during read-only events causes InvalidOperationException. Forgetting to commit or roll back unhandled exceptions can lock Revit."
+  },
+  {
+    "topic": "Drafting and View Management",
+    "namespace": "Autodesk.Revit.DB",
+    "class_name": "ViewDrafting",
+    "summary": "Specialized 2D views that do not display 3D model geometry.",
+    "syntax_pattern": "views = FilteredElementCollector(doc).OfClass(ViewDrafting).ToElements()",
+    "best_practices": "Filter out ViewDrafting elements where view.IsTemplate is True before evaluating element counts. Use FilteredElementCollector(doc, view.Id).GetElementCount() for fast zero-element checks.",
+    "common_pitfalls": "Attempting to query 3D elements inside drafting views yields empty sets. Deleting an active view causes UI crashes."
+  },
+  {
+    "topic": "Workset Querying and Assignment",
+    "namespace": "Autodesk.Revit.DB",
+    "class_name": "FilteredWorksetCollector",
+    "summary": "Collects user-created and standard worksets in workshared models.",
+    "syntax_pattern": "worksets = FilteredWorksetCollector(doc).OfKind(WorksetKind.UserWorkset).ToWorksets()",
+    "best_practices": "Always verify doc.IsWorkshared before instantiating FilteredWorksetCollector. Handle non-workshared models gracefully.",
+    "common_pitfalls": "Modifying worksets requires active central file connectivity. Attempting workset actions on standard non-workshared .rvt files raises InvalidOperationException."
+  },
+  {
+    "topic": "Parameter Access and Modification",
+    "namespace": "Autodesk.Revit.DB",
+    "class_name": "Parameter",
+    "summary": "Element data holder. Access via BuiltInParameter or name lookup.",
+    "syntax_pattern": "param = element.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)\nif param and not param.IsReadOnly:\n    param.Set('NEW_MARK')",
+    "best_practices": "Prefer get_Parameter(BuiltInParameter) over LookupParameter(str) for performance and language independence. Check param.IsReadOnly before Set().",
+    "common_pitfalls": "LookupParameter returns None if parameter does not exist; calling .Set() directly causes AttributeError."
+  }
+]
