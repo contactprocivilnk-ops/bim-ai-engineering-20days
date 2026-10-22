@@ -36,7 +36,7 @@ Phase 2: Local Data Engineering (Days 06 - 10)
 Phase 3: RAG System for Revit API (Days 11 - 15)
 [x] Day 11: ChromaDB setup and text embedding fundamentals.
 
-[ ] Day 12: Revit API edge-case documentation ingestion & chunking.
+[x] Day 12: Revit API edge-case documentation ingestion & chunking.
 
 [ ] Day 13: Semantic vector search & context retrieval module.
 
