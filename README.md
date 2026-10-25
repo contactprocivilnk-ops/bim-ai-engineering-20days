@@ -38,7 +38,7 @@ Phase 3: RAG System for Revit API (Days 11 - 15)
 
 [x] Day 12: Revit API edge-case documentation ingestion & chunking.
 
-[ ] Day 13: Semantic vector search & context retrieval module.
+[x] Day 13: Semantic vector search & context retrieval module.
 
 [ ] Day 14: Dynamic prompt context injection for hallucination mitigation.
 
