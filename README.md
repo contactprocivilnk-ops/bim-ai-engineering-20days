@@ -40,7 +40,7 @@ Phase 3: RAG System for Revit API (Days 11 - 15)
 
 [x] Day 13: Semantic vector search & context retrieval module.
 
-[ ] Day 14: Dynamic prompt context injection for hallucination mitigation.
+[x] Day 14: Dynamic prompt context injection for hallucination mitigation.
 
 [ ] Day 15: Benchmarking tool generation accuracy with and without RAG.
 
