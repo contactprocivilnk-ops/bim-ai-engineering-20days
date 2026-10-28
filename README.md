@@ -42,10 +42,10 @@ Phase 3: RAG System for Revit API (Days 11 - 15)
 
 [x] Day 14: Dynamic prompt context injection for hallucination mitigation.
 
-[ ] Day 15: Benchmarking tool generation accuracy with and without RAG.
+[x] Day 15: Benchmarking tool generation accuracy with and without RAG.
 
 Phase 4: OpenBIM & High-Performance Data (Days 16 - 20)
-[ ] Day 16: IFC parsing and structural component extraction via IfcOpenShell.
+[x] Day 16: IFC parsing and structural component extraction via IfcOpenShell.
 
 [ ] Day 17: Columnar storage with Parquet & high-speed SQL analytics with DuckDB.
 
