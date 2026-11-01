@@ -6,7 +6,8 @@
     "summary": "Core search engine for querying elements within a Revit document.",
     "syntax_pattern": "collector = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_Walls).WhereElementIsNotElementType().ToElements()",
     "best_practices": "Always chain Quick Filters (OfCategory, OfClass) before Slow Filters. Use WhereElementIsNotElementType() to exclude family symbols. For view-specific queries, pass view.Id: FilteredElementCollector(doc, view.Id).",
-    "common_pitfalls": "Avoid iterating over whole document when a view collector is sufficient. ToElements() instantiates Python lists; for large sets prefer lazy iteration directly over the collector."
+    "common_pitfalls": "Avoid iterating over whole document when a view collector is sufficient. ToElements() instantiates Python lists; for large sets prefer lazy iteration directly over the collector.",
+    "compatibility": "Universal (All Revit versions)"
   },
   {
     "topic": "Transactions and Document Modification",
@@ -15,7 +16,8 @@
     "summary": "Context for modifying document state. Required for creating, deleting, or altering elements.",
     "syntax_pattern": "from pyrevit import revit\nwith revit.Transaction('Action Name'):\n    element.LookupParameter('Comments').Set('Updated')",
     "best_practices": "In pyRevit, wrap operations inside with revit.Transaction('Name'): block. Keep transactions as short and scoped as possible.",
-    "common_pitfalls": "Starting a transaction during read-only events causes InvalidOperationException. Forgetting to commit or roll back unhandled exceptions can lock Revit."
+    "common_pitfalls": "Starting a transaction during read-only events causes InvalidOperationException. Forgetting to commit or roll back unhandled exceptions can lock Revit.",
+    "compatibility": "Universal (All Revit versions)"
   },
   {
     "topic": "Drafting and View Management",
@@ -24,7 +26,8 @@
     "summary": "Specialized 2D views that do not display 3D model geometry.",
     "syntax_pattern": "views = FilteredElementCollector(doc).OfClass(ViewDrafting).ToElements()",
     "best_practices": "Filter out ViewDrafting elements where view.IsTemplate is True before evaluating element counts. Use FilteredElementCollector(doc, view.Id).GetElementCount() for fast zero-element checks.",
-    "common_pitfalls": "Attempting to query 3D elements inside drafting views yields empty sets. Deleting an active view causes UI crashes."
+    "common_pitfalls": "Attempting to query 3D elements inside drafting views yields empty sets. Deleting an active view causes UI crashes.",
+    "compatibility": "Universal (All Revit versions)"
   },
   {
     "topic": "Workset Querying and Assignment",
@@ -33,15 +36,17 @@
     "summary": "Collects user-created and standard worksets in workshared models.",
     "syntax_pattern": "worksets = FilteredWorksetCollector(doc).OfKind(WorksetKind.UserWorkset).ToWorksets()",
     "best_practices": "Always verify doc.IsWorkshared before instantiating FilteredWorksetCollector. Handle non-workshared models gracefully.",
-    "common_pitfalls": "Modifying worksets requires active central file connectivity. Attempting workset actions on standard non-workshared .rvt files raises InvalidOperationException."
+    "common_pitfalls": "Modifying worksets requires active central file connectivity. Attempting workset actions on standard non-workshared .rvt files raises InvalidOperationException.",
+    "compatibility": "Universal (All Revit versions)"
   },
   {
-    "topic": "Parameter Access and Modification",
+    "topic": "Units API and ForgeTypeId Breaking Change",
     "namespace": "Autodesk.Revit.DB",
-    "class_name": "Parameter",
-    "summary": "Element data holder. Access via BuiltInParameter or name lookup.",
-    "syntax_pattern": "param = element.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)\nif param and not param.IsReadOnly:\n    param.Set('NEW_MARK')",
-    "best_practices": "Prefer get_Parameter(BuiltInParameter) over LookupParameter(str) for performance and language independence. Check param.IsReadOnly before Set().",
-    "common_pitfalls": "LookupParameter returns None if parameter does not exist; calling .Set() directly causes AttributeError."
+    "class_name": "UnitUtils",
+    "summary": "Handles conversions between internal database units (feet) and UI display units. Breaking changes introduced in Revit 2021/2022.",
+    "syntax_pattern": "from pyrevit import HOST_APP\nrevit_ver = int(HOST_APP.version)\nif revit_ver >= 2022:\n    from Autodesk.Revit.DB import UnitTypeId\n    display_unit = UnitTypeId.Meters\nelse:\n    from Autodesk.Revit.DB import DisplayUnitType\n    display_unit = DisplayUnitType.DUT_METERS\nval = UnitUtils.ConvertFromInternalUnits(raw_val, display_unit)",
+    "best_practices": "Always use pyrevit.HOST_APP.version to dynamically branch unit conversions. For Revit 2022+, DisplayUnitType is deprecated/removed and will throw TypeInitializationException. Use ForgeTypeId and UnitTypeId instead.",
+    "common_pitfalls": "Hardcoding DisplayUnitType in scripts targeted for Revit 2022, 2023, 2024, or 2025 causes fatal crashes at runtime.",
+    "compatibility": "Revit 2021 and older: DisplayUnitType | Revit 2022+: UnitTypeId / ForgeTypeId"
   }
 ]

@@ -45,13 +45,13 @@
   },
   {
     "chunk_id": "chunk_revit_api_005",
-    "topic": "Parameter Access and Modification",
-    "class_name": "Parameter",
+    "topic": "Units API and ForgeTypeId Breaking Change",
+    "class_name": "UnitUtils",
     "namespace": "Autodesk.Revit.DB",
-    "content": "Topic: Parameter Access and Modification\nClass: Parameter (Namespace: Autodesk.Revit.DB)\nSummary: Element data holder. Access via BuiltInParameter or name lookup.\nCode Pattern:\nparam = element.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)\nif param and not param.IsReadOnly:\n    param.Set('NEW_MARK')\nBest Practices: Prefer get_Parameter(BuiltInParameter) over LookupParameter(str) for performance and language independence. Check param.IsReadOnly before Set().\nCommon Pitfalls: LookupParameter returns None if parameter does not exist; calling .Set() directly causes AttributeError.",
+    "content": "Topic: Units API and ForgeTypeId Breaking Change\nClass: UnitUtils (Namespace: Autodesk.Revit.DB)\nSummary: Handles conversions between internal database units (feet) and UI display units. Breaking changes introduced in Revit 2021/2022.\nCode Pattern:\nfrom pyrevit import HOST_APP\nrevit_ver = int(HOST_APP.version)\nif revit_ver >= 2022:\n    from Autodesk.Revit.DB import UnitTypeId\n    display_unit = UnitTypeId.Meters\nelse:\n    from Autodesk.Revit.DB import DisplayUnitType\n    display_unit = DisplayUnitType.DUT_METERS\nval = UnitUtils.ConvertFromInternalUnits(raw_val, display_unit)\nBest Practices: Always use pyrevit.HOST_APP.version to dynamically branch unit conversions. For Revit 2022+, DisplayUnitType is deprecated/removed and will throw TypeInitializationException. Use ForgeTypeId and UnitTypeId instead.\nCommon Pitfalls: Hardcoding DisplayUnitType in scripts targeted for Revit 2022, 2023, 2024, or 2025 causes fatal crashes at runtime.",
     "metadata": {
       "has_code_sample": true,
-      "length_chars": 583
+      "length_chars": 945
     }
   }
 ]

@@ -38,7 +38,7 @@ def log(msg: str):
     """Prints message immediately with flushed stdout to prevent terminal buffering."""
     print(msg, flush=True)
 
-# --- 1. RAG & Vector Engine ---
+# --- 1. RAG & Vector Retrieval Engine ---
 def get_embedding(text: str) -> list[float]:
     response = client.models.embed_content(
         model=EMBEDDING_MODEL,
@@ -146,11 +146,12 @@ class ToolSpec(BaseModel):
     description: str = Field(description="Concise description of tool functionality")
     required_classes: list[str] = Field(description="Revit API classes required")
 
-# --- 4. Main Orchestration Pipeline ---
-def orchestrate_production_pipeline(user_prompt: str):
+# --- 4. Main Production Pipeline ---
+def orchestrate_production_pipeline(user_prompt: str, target_version: str = "2024"):
     log("\n" + "=" * 80)
     log(" UNIFIED AUTONOMOUS PRODUCTION ORCHESTRATOR")
-    log(f" Prompt: '{user_prompt}'")
+    log(f" Prompt         : '{user_prompt}'")
+    log(f" Target Version : Revit {target_version}")
     log("=" * 80)
 
     # 1. RAG Retrieval
@@ -165,11 +166,14 @@ def orchestrate_production_pipeline(user_prompt: str):
     t0 = time.time()
     spec_prompt = f"""
     You are a Principal Revit API Software Architect.
+    Target Revit Environment: Autodesk Revit {target_version}
+    
     Using this technical context:
     {rag_context}
     
     Design a pyRevit tool specification for:
     '{user_prompt}'
+    Ensure your architectural design accounts for version-specific breaking changes if applicable.
     """
     config = types.GenerateContentConfig(
         response_mime_type="application/json",
@@ -192,14 +196,16 @@ def orchestrate_production_pipeline(user_prompt: str):
     Name: {spec.tool_name}
     Panel: {spec.panel_name}
     Classes: {spec.required_classes}
+    Target Environment: Autodesk Revit {target_version}
     
     RAG SDK CONTEXT:
     {rag_context}
     
-    RULES:
-    - Enclose document changes in 'with revit.Transaction("Name"):'.
-    - Apply null checks and verify doc.IsWorkshared if using worksets.
-    - Return pure executable Python code only (no markdown).
+    CRITICAL COMPATIBILITY & RELIABILITY RULES:
+    1. If target is 2022+ or multi-version: Do NOT use deprecated DisplayUnitType. Use pyrevit.HOST_APP.version polyfill with UnitTypeId/ForgeTypeId.
+    2. Enclose document modifications in 'with revit.Transaction("Name"):'.
+    3. Apply null checks and verify doc.IsWorkshared if worksets are queried.
+    4. Return pure executable Python code only without markdown blocks.
     """
     config = types.GenerateContentConfig(temperature=0.1)
     
@@ -256,7 +262,8 @@ def orchestrate_production_pipeline(user_prompt: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Unified Autonomous Orchestrator")
-    parser.add_argument("--prompt", type=str, default="Audit user-created worksets in the model", help="User requirement")
+    parser.add_argument("--prompt", type=str, default="Audit wall lengths and convert internal feet to display meters", help="User requirement")
+    parser.add_argument("--revit-version", type=str, default="2024", help="Target Revit version (e.g., 2022, 2024, 2025)")
     args = parser.parse_args()
 
-    orchestrate_production_pipeline(args.prompt)
+    orchestrate_production_pipeline(args.prompt, target_version=args.revit_version)
